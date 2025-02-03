@@ -126,7 +126,15 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 LOGIN_URL = "/login/"  # Redirect users to login page if they try to access the home page
-LOGIN_REDIRECT_URL = "/"  # Redirect users to home after logging in
+
+# Redirect users to their profile page after login
+LOGIN_REDIRECT_URL = "/users/profile/"
+
+LOGOUT_REDIRECT_URL = "/"
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # Default primary key field type

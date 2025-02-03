@@ -6,19 +6,26 @@
 <h1>Welcome,
   {{ user.first_name }}!
 </h1>
-<p>Bems Id:
+
+{% if user.profile_pic %}
+<img src="{{ user.profile_pic.url }}" alt="Profile Pic">
+{% else %}
+<p>No profile picture uploaded.</p>
+{% endif %}
+
+<p><strong>Bems Id:</strong>
   {{ user.bems_id }}
 </p>
-<p>Email:
+<p><strong>Email:</strong>
   {{ user.email }}
 </p>
-<p>Job Title:
+<p><strong>Job Title:</strong>
   {{ user.job_title }}
 </p>
-<p>Role:
+<p><strong>Role:</strong>
   {{ user.get_role_display }}
 </p>
-<p>Shift:
+<p><strong>Shift:</strong>
   {{ user.shift }}
 </p>
 {% endblock %}
