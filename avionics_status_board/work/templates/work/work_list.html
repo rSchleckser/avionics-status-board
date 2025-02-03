@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Work List{% endblock %}
+
+{% block content %}
+<h1>Work List</h1>
+<a href="{% url 'work:work-create' %}">Create New Work</a>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Status</th>
+      <th>Assigned To</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for work in work_items %}
+    <tr>
+      <td>
+        {{ work.name }}
+      </td>
+      <td>
+        {{ work.type }}
+      </td>
+      <td>
+        {{ work.get_status_display }}
+      </td>
+      <td>
+        {{ work.assigned_to }}
+      </td>
+      <td>
+        <a href="{% url 'work-edit' work.pk %}">Edit</a> |
+        <a href="{% url 'work-archive' work.pk %}">Archive</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="5">No work items available.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

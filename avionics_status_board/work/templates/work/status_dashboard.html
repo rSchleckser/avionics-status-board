@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Status Dashboard{% endblock %}
+
+{% block content %}
+<h1>Status Dashboard</h1>
+<div class="ui grid container six statistics center aligned">
+
+  <!-- Total -->
+  <div class="ui statistic two wide column hover-statistic">
+    <div class="value">
+      {{ planes }}
+    </div>
+    <h3><i class="plane icon"></i> Total</h3>
+  </div>
+
+  <!-- Deliveries -->
+  <div class="ui statistic two wide column hover-statistic">
+    <div class="value">
+      {{ deliveries }}
+    </div>
+    <h3><i class="blue check circle icon"></i> Deliveries</h3>
+  </div>
+
+  <!-- Ticketed -->
+  <div class="ui statistic two wide column hover-statistic">
+    <div class="value">
+      {{ ticket }}
+    </div>
+    <h3><i class="green ticket icon"></i> Ticketed</h3>
+  </div>
+
+  <!-- In Work -->
+  <div class="ui statistic two wide column hover-statistic">
+    <div class="value">
+      {{ inWork }}
+    </div>
+    <h3><i class="yellow wrench icon"></i> In Work</h3>
+  </div>
+
+  <!-- Can't Work -->
+  <div class="ui statistic two wide column hover-statistic">
+    <div class="value">
+      {{ cantWork }}
+    </div>
+    <h3><i class="red dont icon"></i> Can't Work</h3>
+  </div>
+
+  <!-- Open Paper -->
+  <div class="ui statistic two wide column hover-statistic">
+    <div class="value">
+      {{ openPaper }}
+    </div>
+    <h3><i class="copy outline icon"></i> Open Paper</h3>
+  </div>
+
+</div>
+{% endblock %}

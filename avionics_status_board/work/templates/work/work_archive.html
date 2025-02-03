@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Archive Work{% endblock %}
+
+{% block content %}
+<h1>Archive Work:
+  {{ work.name }}
+</h1>
+
+<p>Are you sure you want to archive this work?</p>
+
+<form method="post">
+  {% csrf_token %}
+  <input type="hidden" name="status" value="archived">
+  <button type="submit">Confirm Archive</button>
+  <a href="{% url 'work-list' %}">Cancel</a>
+</form>
+{% endblock %}
