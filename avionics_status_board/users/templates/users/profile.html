@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<h1>Welcome,
+  {{ user.first_name }}!
+</h1>
+<p>Bems Id:
+  {{ user.bems_id }}
+</p>
+<p>Email:
+  {{ user.email }}
+</p>
+<p>Job Title:
+  {{ user.job_title }}
+</p>
+<p>Role:
+  {{ user.get_role_display }}
+</p>
+<p>Shift:
+  {{ user.shift }}
+</p>
+{% endblock %}
