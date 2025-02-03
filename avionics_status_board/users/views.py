@@ -1,32 +1,34 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView
 from .forms import CustomUserCreationForm
 from .models import CustomUser
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.detail import DetailView
 
 
+class SignupView(CreateView):
+    model = CustomUser
+    form_class = CustomUserCreationForm
+    template_name = "users/signup.html"
+    success_url = reverse_lazy("home")  # Redirect after successful signup
 
-def signup_view(request):
-    if request.method == "POST":
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)  # Log the user in after signup
-            return redirect("home")
-    else:
-        form = CustomUserCreationForm()
-    
-    return render(request, "users/signup.html", {"form": form})
+    def form_valid(self, form):
+        """Logs the user in after successful signup."""
+        response = super().form_valid(form)
+        login(self.request, self.object)  # Auto-login user
+        return response
 
 
-@login_required
-def profile_view(request):
-    # Fetch user's work assignments (Once Work model is added)
-    # user_work = Work.objects.filter(assigned_to=request.user)
-    user_work = []  # Placeholder until Work model exists
+class ProfileView(LoginRequiredMixin, DetailView):
+    model = CustomUser
+    template_name = "users/profile.html"
+    context_object_name = "user"
 
-    context = {
-        "user": request.user,
-        "user_work": user_work,
-    }
-    return render(request, "users/profile.html", context)
+    def get_object(self):
+        return self.request.user  # Fetch logged-in user's profile
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context["user_work"] = Work.objects.filter(assigned=self.request.user)  # Fetch assigned work
+    #     return context
