@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+{{ form.instance.pk|yesno:"Edit Airplane,Create Airplane" }}{% endblock %}
+
+{% block content %}
+<h1>
+  {{ form.instance.pk|yesno:"Edit Airplane,Create Airplane" }}
+</h1>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  <button type="submit">Save</button>
+  <a href="{% url 'airplane:list' %}">Cancel</a>
+</form>
+{% endblock %}

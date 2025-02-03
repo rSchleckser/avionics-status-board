@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Airplane List{% endblock %}
+
+{% block content %}
+<h1>Airplane List</h1>
+<a href="{% url 'airplane:create' %}">Add New Airplane</a>
+
+<ul>
+  {% for airplane in airplanes %}
+  <li>
+    <a href="{% url 'airplane:detail' airplane.pk %}">
+      Line
+      {{ airplane.line_number }} -
+      {{ airplane.customer }}
+    </a>
+  </li>
+  {% empty %}
+  <li>No airplanes available.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

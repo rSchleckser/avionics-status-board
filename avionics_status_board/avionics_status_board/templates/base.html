@@ -53,6 +53,7 @@
   <nav>
     {% if user.is_authenticated %}
     <a href="{% url 'users:profile' %}">Home</a>
+    <a href="{% url 'airplane:list' %}">Airplane</a>
     <a href="{% url 'work:work-list' %}">Work</a>
     <a href="{% url 'work:work-create' %}">Create Work</a> {# Optional for leads #}
     <a href="{% url 'work:status-dashboard' %}">Status</a>

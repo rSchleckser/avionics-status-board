@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Airplane Details{% endblock %}
+
+{% block content %}
+<h1>Line
+  {{ object.line_number }}
+</h1>
+<p>Customer:
+  {{ object.customer }}
+</p>
+<p>Effectivity:
+  {{ object.effectivity }}
+</p>
+<p>Delivered:
+  {{ object.delivered|yesno:"Yes,No" }}
+</p>
+<p>Ticketed:
+  {{ object.ticketed|yesno:"Yes,No" }}
+</p>
+
+<a href="{% url 'airplane:edit' object.pk %}">Edit</a>
+<a href="{% url 'airplane:list' %}">Back to List</a>
+{% endblock %}
