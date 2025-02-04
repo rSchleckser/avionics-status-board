@@ -13,12 +13,12 @@ class AirplaneDetailView(DetailView):
 
 class AirplaneCreateView(CreateView):
     model = Airplane
-    fields = ["line_number", "effectivity", "customer", "delivered", "ticketed"]
+    fields = ["line_number", "location_city", "location_stall", "effectivity", "customer", "delivered", "ticketed"]
     template_name = "airplane/airplane_form.html"
     success_url = reverse_lazy("airplane:list")
 
 class AirplaneUpdateView(UpdateView):
     model = Airplane
-    fields = ["line_number", "effectivity", "customer", "delivered", "ticketed"]
+    fields = ["line_number", "location_city", "location_stall", "effectivity", "customer", "delivered", "ticketed"]
     template_name = "airplane/airplane_form.html"
     success_url = reverse_lazy("airplane:list")
