@@ -3,45 +3,51 @@
 {% block title %}Profile{% endblock %}
 
 {% block content %}
-<h1>Welcome,
-  {{ user.first_name }}!
-</h1>
+<div class="ui container">
+  <h1>Welcome,
+    {{ user.first_name }}!
+  </h1>
 
-{% if user.profile_pic %}
-<img src="{{ user.profile_pic.url }}" alt="Profile Pic">
-{% else %}
-<p>No profile picture uploaded.</p>
-{% endif %}
+  <!-- Profile Picture -->
+  {% if user.profile_pic %}
+  <img src="{{ user.profile_pic.url }}" alt="Profile Picture" class="ui small circular image">
+  {% else %}
+  <p>No profile picture uploaded.</p>
+  {% endif %}
 
-<p><strong>Bems Id:</strong>
-  {{ user.bems_id }}
-</p>
-<p><strong>Email:</strong>
-  {{ user.email }}
-</p>
-<p><strong>Job Title:</strong>
-  {{ user.job_title }}
-</p>
-<p><strong>Role:</strong>
-  {{ user.get_role_display }}
-</p>
-<p><strong>Shift:</strong>
-  {{ user.shift }}
-</p>
+  <!-- User Info -->
+  <div class="ui segment">
+    <p><strong>Bems Id:</strong>
+      {{ user.bems_id }}
+    </p>
+    <p><strong>Email:</strong>
+      {{ user.email }}
+    </p>
+    <p><strong>Job Title:</strong>
+      {{ user.job_title }}
+    </p>
+    <p><strong>Role:</strong>
+      {{ user.get_role_display }}
+    </p>
+    <p><strong>Shift:</strong>
+      {{ user.shift }}
+    </p>
+  </div>
 
-<h3>Assigned Work</h3>
-{% if user_work %}
-<ul>
-  {% for work in user_work %}
-  <li>
-    <a href="{% url 'work:work-detail' work.pk %}">
-      {{ work.name }}</a> - Status:
-    {{ work.status }}
-  </li>
-  {% endfor %}
-</ul>
-{% else %}
-<p>No work assignments yet.</p>
-{% endif %}
-
+  <!-- Assigned Work -->
+  <h3>Assigned Work</h3>
+  {% if user_work %}
+  <ul class="ui list">
+    {% for work in user_work %}
+    <li>
+      <a href="{% url 'work:work-detail' work.pk %}">
+        {{ work.name }}</a> - Status:
+      {{ work.status }}
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>No work assignments yet.</p>
+  {% endif %}
+</div>
 {% endblock %}

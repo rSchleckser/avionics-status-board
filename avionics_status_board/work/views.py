@@ -19,21 +19,21 @@ class WorkDetailView(DetailView):
 
 class WorkCreateView(LoginRequiredMixin, CreateView):
     model = Work
-    fields = ['name', 'description', 'type', 'status', 'assigned_to']  # Fixed field name
+    fields = ['name', 'description', 'type', 'status', 'assigned_to']
     template_name = 'work/work_form.html'
-    success_url = reverse_lazy('work-list')  # Ensure this matches `urls.py`
+    success_url = reverse_lazy('work:work-list')  # ✅ Fixed with namespace
 
 class WorkEditView(LoginRequiredMixin, UpdateView):
     model = Work
-    fields = ['name', 'status', 'assigned_to']  # Fixed field name
+    fields = ['name', 'status', 'assigned_to']
     template_name = 'work/work_form.html'
-    success_url = reverse_lazy('work-list')
+    success_url = reverse_lazy('work:work-list')  # ✅ Fixed
 
 class WorkArchiveView(LoginRequiredMixin, UpdateView):
     model = Work
     fields = ['status']
     template_name = 'work/work_archive.html'
-    success_url = reverse_lazy('work-list')
+    success_url = reverse_lazy('work:work-list')  # ✅ Fixed
 
 class WorkScheduleView(LoginRequiredMixin, ListView):  # Changed to ListView
     model = Work
