@@ -29,23 +29,13 @@
   {{ user.shift }}
 </p>
 
-<h2>
-  {{ user.first_name }}
-  {{ user.last_name }}
-</h2>
-<p>Job Title:
-  {{ user.job_title }}
-</p>
-<p>Shift:
-  {{ user.shift }}
-</p>
-
 <h3>Assigned Work</h3>
 {% if user_work %}
 <ul>
   {% for work in user_work %}
   <li>
-    {{ work.name }} - Status:
+    <a href="{% url 'work:work-detail' work.pk %}">
+      {{ work.name }}</a> - Status:
     {{ work.status }}
   </li>
   {% endfor %}

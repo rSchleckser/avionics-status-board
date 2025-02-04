@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}Status Overview{% endblock %}
+
+{% block content %}
+<h1>Status Overview</h1>
+
+<!-- Status Dashboard Section -->
+<div class="ui grid container six statistics center aligned">
+  <div class="ui statistic two wide column hover-statistic">
+    <div class="value">
+      {{ planes }}
+    </div>
+    <h3><i class="plane icon"></i> Total</h3>
+  </div>
+  <div class="ui statistic two wide column hover-statistic">
+    <div class="value">
+      {{ deliveries }}
+    </div>
+    <h3><i class="blue check circle icon"></i> Deliveries</h3>
+  </div>
+  <div class="ui statistic two wide column hover-statistic">
+    <div class="value">
+      {{ ticket }}
+    </div>
+    <h3><i class="green ticket icon"></i> Ticketed</h3>
+  </div>
+  <div class="ui statistic two wide column hover-statistic">
+    <div class="value">
+      {{ inWork }}
+    </div>
+    <h3><i class="yellow wrench icon"></i> In Work</h3>
+  </div>
+  <div class="ui statistic two wide column hover-statistic">
+    <div class="value">
+      {{ cantWork }}
+    </div>
+    <h3><i class="red dont icon"></i> Can't Work</h3>
+  </div>
+  <div class="ui statistic two wide column hover-statistic">
+    <div class="value">
+      {{ openPaper }}
+    </div>
+    <h3><i class="copy outline icon"></i> Open Paper</h3>
+  </div>
+</div>
+
+<!-- Status Table Section -->
+<table class="ui raised very padded container segment selectable sortable compact celled definition table">
+  <thead>
+    <tr>
+      <th onclick="sortTable(0)">Stall</th>
+      <th onclick="sortTable(1)">Line Number</th>
+      <th>Effectivity</th>
+      <th>Customer</th>
+      <th>Open Jobs</th>
+      <th>Ticket</th>
+      <th>Delivery</th>
+      <th onclick="sortTable(2)">Location</th>
+      <th>Schedule</th>
+      <th>Assigned</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for airplane in airplanes %}
+    <tr>
+      <td>
+        {{ airplane.location_stall }}
+      </td>
+      <td>
+        {{ airplane.line_number }}
+      </td>
+      <td>
+        {{ airplane.effectivity }}
+      </td>
+      <td>
+        {{ airplane.customer }}
+      </td>
+      <td>
+        {% with work_items|dictsort:"status"|dictsort:"airplane.id"|slice:"1" as work_item %}
+        {{ work_item.status|default:"No Work" }}
+        {% endwith %}
+      </td>
+      <td>
+        {{ airplane.ticketed|yesno:"Yes,No" }}
+      </td>
+      <td>
+        {{ airplane.delivered|yesno:"Yes,No" }}
+      </td>
+      <td>
+        {{ airplane.location_city }}
+      </td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="10">No aircraft data available.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- JavaScript for Sorting -->
+<script>
+  function sortTable(columnIndex) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.querySelector("table");
+    switching = true;
+    dir = "asc";
+
+    while (switching) {
+      switching = false;
+      rows = table.rows;
+
+      for (i = 1; i < (rows.length - 1); i++) {
+        shouldSwitch = false;
+        x = rows[i].getElementsByTagName("TD")[columnIndex];
+        y = rows[i + 1].getElementsByTagName("TD")[columnIndex];
+
+        if (dir == "asc") {
+          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+            shouldSwitch = true;
+            break;
+          }
+        } else if (dir == "desc") {
+          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+            shouldSwitch = true;
+            break;
+          }
+        }
+      }
+
+      if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        switchcount++;
+      } else {
+        if (switchcount === 0 && dir === "asc") {
+          dir = "desc";
+          switching = true;
+        }
+      }
+    }
+  }
+</script>
+
+{% endblock %}

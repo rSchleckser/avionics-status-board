@@ -46,6 +46,12 @@
       cursor: pointer;
     }
   </style>
+  <!-- Semantic UI CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+
+  <!-- Semantic UI JavaScript (Optional, only if needed) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
+
 </head>
 
 <body>
@@ -55,8 +61,7 @@
     <a href="{% url 'users:profile' %}">Home</a>
     <a href="{% url 'airplane:list' %}">Airplane</a>
     <a href="{% url 'work:work-list' %}">Work</a>
-    <a href="{% url 'work:work-create' %}">Create Work</a> {# Optional for leads #}
-    <a href="{% url 'work:status-dashboard' %}">Status</a>
+    <a href="{% url 'work:status-overview' %}">Status Overview</a>
     <form class="logout-form" action="{% url 'users:logout' %}" method="post">
       {% csrf_token %}
       <button type="submit">Logout</button>

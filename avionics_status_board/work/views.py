@@ -1,13 +1,21 @@
-from django.views.generic import ListView, CreateView, UpdateView, TemplateView
+from django.views.generic import ListView, CreateView, UpdateView, TemplateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from .models import Work, Airplane
 
-class WorkListView(LoginRequiredMixin, ListView):
+from django.views.generic import ListView
+from .models import Work
+
+class WorkListView(ListView):
     model = Work
-    template_name = 'work/work_list.html'
-    context_object_name = 'work_items'
+    template_name = "work/work_list.html"
+    context_object_name = "work_items" 
+
+
+class WorkDetailView(DetailView):
+    model = Work
+    template_name = "work/work_detail.html"
 
 class WorkCreateView(LoginRequiredMixin, CreateView):
     model = Work
@@ -35,13 +43,19 @@ class WorkScheduleView(LoginRequiredMixin, ListView):  # Changed to ListView
     def get_queryset(self):
         return Work.objects.filter(status="scheduled")  # Adjust filter as needed
 
-def status_dashboard(request):
+
+def status_overview(request):
+    airplanes = Airplane.objects.all()
+    work_items = Work.objects.all()
+
     context = {
-        "planes": Airplane.objects.count(),
-        "deliveries": Airplane.objects.filter(delivered=True).count(),
-        "ticket": Airplane.objects.filter(ticketed=True).count(),
-        "inWork": Work.objects.filter(status="in_progress").count(),
-        "cantWork": Work.objects.filter(status="cant_work").count(),
-        "openPaper": Work.objects.filter(status="open_paper").count(),
+        "planes": airplanes.count(),
+        "deliveries": airplanes.filter(delivered=True).count(),
+        "ticket": airplanes.filter(ticketed=True).count(),
+        "inWork": work_items.filter(status="in_progress").count(),
+        "cantWork": work_items.filter(status="cant_work").count(),
+        "openPaper": work_items.filter(status="open_paper").count(),
+        "airplanes": airplanes,
+        "work_items": work_items,
     }
-    return render(request, "work/status_dashboard.html", context)
+    return render(request, "work/status_overview.html", context)

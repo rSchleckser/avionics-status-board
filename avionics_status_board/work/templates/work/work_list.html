@@ -29,11 +29,11 @@
         {{ work.get_status_display }}
       </td>
       <td>
-        {{ work.assigned_to }}
+        {{ work.assigned_to|default:"Unassigned" }}
       </td>
       <td>
-        <a href="{% url 'work-edit' work.pk %}">Edit</a> |
-        <a href="{% url 'work-archive' work.pk %}">Archive</a>
+        <a href="{% url 'work:work-edit' work.pk %}">Edit</a> |
+        <a href="{% url 'work:work-archive' work.pk %}">Archive</a>
       </td>
     </tr>
     {% empty %}

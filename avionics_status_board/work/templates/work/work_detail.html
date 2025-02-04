@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Work Details{% endblock %}
+
+{% block content %}
+<h1>
+  {{ object.name }}
+</h1>
+<p>Description:
+  {{ object.description }}
+</p>
+<p>Type:
+  {{ object.get_type_display }}
+</p>
+<p>Status:
+  {{ object.get_status_display }}
+</p>
+<p>Assigned To:
+  {{ object.assigned_to|default:"Unassigned" }}
+</p>
+<p>Created At:
+  {{ object.created_at }}
+</p>
+
+<a href="{% url 'airplane:detail' object.airplane.pk %}">Back to Airplane</a>
+{% endblock %}

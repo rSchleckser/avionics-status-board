@@ -5,7 +5,7 @@ from .forms import CustomUserCreationForm
 from .models import CustomUser
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.detail import DetailView
-
+from work.models import Work
 
 class SignupView(CreateView):
     model = CustomUser
@@ -26,9 +26,9 @@ class ProfileView(LoginRequiredMixin, DetailView):
     context_object_name = "user"
 
     def get_object(self):
-        return self.request.user  # Fetch logged-in user's profile
+        return self.request.user  # Fetch the logged-in user's profile
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context["user_work"] = Work.objects.filter(assigned=self.request.user)  # Fetch assigned work
-    #     return context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["user_work"] = Work.objects.filter(assigned_to=self.request.user)  # ✅ Corrected field
+        return context

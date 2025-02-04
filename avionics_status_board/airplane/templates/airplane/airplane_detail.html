@@ -19,6 +19,26 @@
   {{ object.ticketed|yesno:"Yes,No" }}
 </p>
 
-<a href="{% url 'airplane:edit' object.pk %}">Edit</a>
-<a href="{% url 'airplane:list' %}">Back to List</a>
+<!-- Edit Airplane Button -->
+<a href="{% url 'airplane:edit' object.pk %}" class="ui button yellow">Edit Airplane</a>
+
+<h2>Assigned Work</h2>
+{% if work_items %}
+<ul>
+  {% for work in work_items %}
+  <li>
+    <a href="{% url 'work:work-detail' work.pk %}">
+      {{ work.name }}</a> -
+    {{ work.status }}
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>No work assigned to this airplane.</p>
+{% endif %}
+
+<!-- Button to Add Work -->
+<a href="{% url 'airplane:add-work' object.pk %}" class="ui button primary">Add Work</a>
+
+<a href="{% url 'airplane:list' %}" class="ui button">Back to List</a>
 {% endblock %}

@@ -1,5 +1,7 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.shortcuts import get_object_or_404
 from .models import Airplane
+from work.models import Work
 from django.urls import reverse_lazy
 
 class AirplaneListView(ListView):
@@ -10,6 +12,24 @@ class AirplaneListView(ListView):
 class AirplaneDetailView(DetailView):
     model = Airplane
     template_name = "airplane/airplane_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["work_items"] = Work.objects.filter(airplane=self.object)  # Fetch jobs for this airplane
+        return context
+
+class WorkCreateView(CreateView):
+    model = Work
+    fields = ["name", "description", "type", "status", "assigned_to"]
+    template_name = "work/work_form.html"
+
+    def form_valid(self, form):
+        airplane = get_object_or_404(Airplane, pk=self.kwargs["pk"])  # Get airplane from URL
+        form.instance.airplane = airplane  # Assign job to the airplane
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("airplane:detail", kwargs={"pk": self.kwargs["pk"]})  # Redirect back to airplane details
 
 class AirplaneCreateView(CreateView):
     model = Airplane
