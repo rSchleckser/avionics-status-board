@@ -9,6 +9,19 @@ class AirplaneListView(ListView):
     template_name = "airplane/airplane_list.html"
     context_object_name = "airplanes"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Status overview data
+        context["planes"] = Airplane.objects.count()
+        context["deliveries"] = Airplane.objects.filter(delivered=True).count()
+        context["ticket"] = Airplane.objects.filter(ticketed=True).count()
+        context["inWork"] = Work.objects.filter(status="in_progress").count()
+        context["cantWork"] = Work.objects.filter(status="cant_work").count()
+        context["openPaper"] = Work.objects.filter(status="open_paper").count()
+
+        return context
+
 class AirplaneDetailView(DetailView):
     model = Airplane
     template_name = "airplane/airplane_detail.html"

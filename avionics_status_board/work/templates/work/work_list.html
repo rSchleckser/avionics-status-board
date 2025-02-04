@@ -4,12 +4,13 @@
 
 {% block content %}
 <h1>Work List</h1>
-<a href="{% url 'work:work-create' %}">Create New Work</a>
+<a href="{% url 'work:work-create' %}" class="ui button primary">Create New Work</a>
 
-<table>
+<table class="ui celled table">
   <thead>
     <tr>
-      <th>Name</th>
+      <th>Line Number</th>
+      <th>Job</th>
       <th>Type</th>
       <th>Status</th>
       <th>Assigned To</th>
@@ -19,6 +20,9 @@
   <tbody>
     {% for work in work_items %}
     <tr>
+      <td>
+        {{work.airplane.line_number}}
+      </td>
       <td>
         {{ work.name }}
       </td>
@@ -32,8 +36,8 @@
         {{ work.assigned_to|default:"Unassigned" }}
       </td>
       <td>
-        <a href="{% url 'work:work-edit' work.pk %}">Edit</a> |
-        <a href="{% url 'work:work-archive' work.pk %}">Archive</a>
+        <a href="{% url 'work:work-edit' work.pk %}" class="ui button yellow">Edit</a>
+        <a href="{% url 'work:work-archive' work.pk %}" class="ui button red">Archive</a>
       </td>
     </tr>
     {% empty %}

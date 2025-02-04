@@ -1,21 +1,98 @@
 {% extends "base.html" %}
 
-{% block title %}Airplane List{% endblock %}
+{% block title %}Status Overview & Airplane List{% endblock %}
 
 {% block content %}
-<h1>Airplane List</h1>
-<a href="{% url 'airplane:create' %}">Add New Airplane</a>
+<h1>Status Overview</h1>
 
-<ul>
-  {% for airplane in airplanes %}
-  <li>
-    <a href="{% url 'airplane:detail' airplane.pk %}">
-      Line
-      {{ airplane.line_number }} -
-      {{ airplane.customer }} - {{airplane.location_city}} - {{airplane.location_stall}}
-  </li>
-  {% empty %}
-  <li>No airplanes available.</li>
-  {% endfor %}
-</ul>
+<!-- Status Dashboard Section -->
+<div class="ui grid container six statistics center aligned">
+  <div class="ui statistic two wide column hover-statistic">
+    <div class="value">
+      {{ planes }}
+    </div>
+    <h3><i class="plane icon"></i> Total</h3>
+  </div>
+  <div class="ui statistic two wide column hover-statistic">
+    <div class="value">
+      {{ deliveries }}
+    </div>
+    <h3><i class="blue check circle icon"></i> Deliveries</h3>
+  </div>
+  <div class="ui statistic two wide column hover-statistic">
+    <div class="value">
+      {{ ticket }}
+    </div>
+    <h3><i class="green ticket icon"></i> Ticketed</h3>
+  </div>
+  <div class="ui statistic two wide column hover-statistic">
+    <div class="value">
+      {{ inWork }}
+    </div>
+    <h3><i class="yellow wrench icon"></i> In Work</h3>
+  </div>
+  <div class="ui statistic two wide column hover-statistic">
+    <div class="value">
+      {{ cantWork }}
+    </div>
+    <h3><i class="red dont icon"></i> Can't Work</h3>
+  </div>
+  <div class="ui statistic two wide column hover-statistic">
+    <div class="value">
+      {{ openPaper }}
+    </div>
+    <h3><i class="copy outline icon"></i> Open Paper</h3>
+  </div>
+</div>
+
+<h1>Airplane List</h1>
+<a href="{% url 'airplane:create' %}" class="ui button primary">Add New Airplane</a>
+
+<!-- Airplane Table -->
+<table class="ui celled table">
+  <thead>
+    <tr>
+      <th>Stall</th>
+      <th>Line Number</th>
+      <th>Effectivity</th>
+      <th>Customer</th>
+      <th>Ticketed</th>
+      <th>Delivered</th>
+      <th>Location</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for airplane in airplanes %}
+    <tr>
+      <td>
+        {{ airplane.location_stall }}
+      </td>
+      <td>
+        {{ airplane.line_number }}
+      </td>
+      <td>
+        {{ airplane.effectivity }}
+      </td>
+      <td>
+        {{ airplane.customer }}
+      </td>
+      <td>
+        {{ airplane.ticketed|yesno:"Yes,No" }}
+      </td>
+      <td>
+        {{ airplane.delivered|yesno:"Yes,No" }}
+      </td>
+      <td>
+        {{ airplane.location_city }}
+      </td>
+      <td><a href="{% url 'airplane:detail' airplane.pk %}" class="ui button">View</a></td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="8">No airplanes available.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}
