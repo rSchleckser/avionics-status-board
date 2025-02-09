@@ -1,9 +1,9 @@
 from django.contrib.auth import login
 from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView
-from .forms import CustomUserCreationForm
+from django.views.generic.edit import CreateView, UpdateView
+from .forms import CustomUserCreationForm, ProfileUpdateForm 
 from .models import CustomUser
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic.detail import DetailView
 from work.models import Work
 
@@ -26,9 +26,24 @@ class ProfileView(LoginRequiredMixin, DetailView):
     context_object_name = "user"
 
     def get_object(self):
-        return self.request.user  # Fetch the logged-in user's profile
+        return self.request.user  
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["user_work"] = Work.objects.filter(assigned_to=self.request.user)  # ✅ Corrected field
+        context["user_work"] = Work.objects.filter(assigned_to=self.request.user).order_by("-assigned_at")  
         return context
+
+
+class ProfileUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = CustomUser
+    form_class = ProfileUpdateForm
+    template_name = "users/profile_edit.html"
+    success_url = reverse_lazy("users:profile")
+
+    def get_object(self, queryset=None):
+        """Ensure the user can only edit their own profile."""
+        return self.request.user
+
+    def test_func(self):
+        """Check if the user is updating their own profile."""
+        return self.get_object() == self.request.user

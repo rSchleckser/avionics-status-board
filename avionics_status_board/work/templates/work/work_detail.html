@@ -18,6 +18,10 @@
 <p>Assigned To:
   {{ object.assigned_to|default:"Unassigned" }}
 </p>
+<p>Assigned At:
+  {{ object.assigned_at|default_if_none:"Unassigned" }}
+</p>
+
 <p>Created At:
   {{ object.created_at }}
 </p>

@@ -8,46 +8,95 @@
     {{ user.first_name }}!
   </h1>
 
-  <!-- Profile Picture -->
-  {% if user.profile_pic %}
-  <img src="{{ user.profile_pic.url }}" alt="Profile Picture" class="ui small circular image">
-  {% else %}
-  <p>No profile picture uploaded.</p>
-  {% endif %}
+  <div class="ui grid">
+    <!-- Profile Picture Section -->
+    <div class="four wide column">
+      <div class="ui card">
+        <div class="image">
+          {% if user.profile_pic %}
+          <img src="{{ user.profile_pic.url }}" alt="Profile Picture" class="ui small circular image">
+          {% else %}
+          <img src="https://via.placeholder.com/150" alt="Default Avatar" class="ui small circular image">
+          {% endif %}
+        </div>
+        <div class="content">
+          <a href="{% url 'users:profile-edit' %}" class="ui yellow button fluid">Edit Profile</a>
+        </div>
+      </div>
+    </div>
 
-  <!-- User Info -->
-  <div class="ui segment">
-    <p><strong>Bems Id:</strong>
-      {{ user.bems_id }}
-    </p>
-    <p><strong>Email:</strong>
-      {{ user.email }}
-    </p>
-    <p><strong>Job Title:</strong>
-      {{ user.job_title }}
-    </p>
-    <p><strong>Role:</strong>
-      {{ user.get_role_display }}
-    </p>
-    <p><strong>Shift:</strong>
-      {{ user.shift }}
-    </p>
+    <!-- User Information Section -->
+    <div class="twelve wide column">
+      <div class="ui segment">
+        <h3>Profile Details</h3>
+        <div class="ui two column stackable grid">
+          <div class="column">
+            <p><strong>BEMS ID:</strong>
+              {{ user.bems_id }}
+            </p>
+            <p><strong>Email:</strong>
+              {{ user.email }}
+            </p>
+            <p><strong>Job Title:</strong>
+              {{ user.job_title }}
+            </p>
+          </div>
+          <div class="column">
+            <p><strong>Role:</strong>
+              {{ user.get_role_display }}
+            </p>
+            <p><strong>Shift:</strong>
+              {{ user.shift }}
+            </p>
+            <p><strong>Location: </strong>
+              {{user.location}}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Assigned Work Section -->
+      <div class="ui segment">
+        <h3>Assigned Work</h3>
+        {% if user_work %}
+        <table class="ui celled table">
+          <thead>
+            <tr>
+              <th>Work Name</th>
+              <th>Status</th>
+              <th>Aircraft</th>
+              <th>Assigned Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for work in user_work %}
+            <tr>
+              <td>
+                {{ work.name }}
+              </td>
+              <td>
+                {{ work.status }}
+              </td>
+              <td>
+                {{ work.airplane.line_number }}
+              </td>
+              <td>
+                {{ work.assigned_at|date:"M d, Y H:i" }}
+              </td>
+              <td>
+                <a href="{% url 'work:work-detail' work.pk %}" class="ui button">View</a>
+              </td>
+            </tr>
+
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <p>No work assignments yet.</p>
+        {% endif %}
+      </div>
+    </div>
   </div>
-
-  <!-- Assigned Work -->
-  <h3>Assigned Work</h3>
-  {% if user_work %}
-  <ul class="ui list">
-    {% for work in user_work %}
-    <li>
-      <a href="{% url 'work:work-detail' work.pk %}">
-        {{ work.name }}</a> - Status:
-      {{ work.status }}
-    </li>
-    {% endfor %}
-  </ul>
-  {% else %}
-  <p>No work assignments yet.</p>
-  {% endif %}
 </div>
 {% endblock %}
