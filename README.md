@@ -90,5 +90,5 @@ The **Avionics Status Board** is a web-based platform designed for avionics tech
 MIT License
 
 ## Contact
-For any inquiries, contact [your email] or create an issue in the repository.
+For any inquiries, contact rickyschleckser@gmail.com.
 
